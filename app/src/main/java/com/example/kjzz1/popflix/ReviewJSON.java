@@ -1,6 +1,7 @@
 package com.example.kjzz1.popflix;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,13 +27,17 @@ public class ReviewJSON extends AsyncTask<String, Void, String> {
                 JSONObject reader = new JSONObject(stream);
                 JSONArray results = reader.optJSONArray("results");
 
-                //getting random number for array of backdrops so that each time DetailsActivity is
-                // loaded there is a diff image.
-                Double d = (Math.floor(Math.random() * results.length()));
-                Integer i = (int) d.doubleValue();
+                for (int i=0;i<=results.length();i++){
+                    JSONObject jsonObject = results.getJSONObject(i);
+                    String author = jsonObject.getString("author");
+                    String content = jsonObject.getString("content");
 
-                JSONObject jsonObject = results.getJSONObject(0);
-                review = jsonObject.getString("content");
+
+
+                    review = "";
+
+                    review = review + content + "\r\n\r\n" + "Reviewed by: " + author;
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
