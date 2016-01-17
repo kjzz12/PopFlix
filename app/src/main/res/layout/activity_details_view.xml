@@ -7,21 +7,21 @@
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="false"
-        style="@style/Theme.AppCompat.NoActionBar"
-    android:nestedScrollingEnabled="false">
+        style="@style/Theme.AppCompat.NoActionBar">
 
         <ImageView
             android:id="@+id/backdrop_view"
             android:layout_width="fill_parent"
-            android:layout_height="200dp"
+            android:layout_height="203dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:clickable="true" />
         <include layout="@layout/toolbar"/>
         <ImageView
             android:id="@+id/grid_item_image"
@@ -68,5 +68,37 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="SO GOOD!"
+            android:id="@+id/movieReviewTruncated"
+            android:layout_below="@id/plotSummary"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:clickable="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:text="Read Movie Review"
+            android:id="@+id/movieReview"
+            android:layout_below="@id/movieReviewTruncated"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:clickable="true" />
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/backdrop_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="75dp"
+            android:id="@+id/playButton"
+            android:background="@android:color/transparent"
+            android:clickable="true"/>
     </RelativeLayout>
 </ScrollView>

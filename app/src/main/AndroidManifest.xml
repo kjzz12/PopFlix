@@ -27,6 +27,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MoviePosterActivity"/>
         </activity>
+        <activity
+            android:name=".ReviewActivity"
+            android:parentActivityName=".DetailsActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DetailsActivity"/>
+        </activity>
 
 
     </application>
