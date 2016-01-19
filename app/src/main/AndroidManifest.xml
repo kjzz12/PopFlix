@@ -20,23 +20,24 @@
         </activity>
         <activity
             android:name=".DetailsActivity"
-            android:parentActivityName=".MoviePosterActivity"
             android:launchMode="singleTop"
+            android:parentActivityName=".MoviePosterActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MoviePosterActivity"/>
+                android:value=".MoviePosterActivity" />
         </activity>
         <activity
             android:name=".ReviewActivity"
-            android:parentActivityName=".DetailsActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:parentActivityName=".DetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DetailsActivity"/>
+                android:value=".DetailsActivity" />
         </activity>
-
-
+        <activity
+            android:name=".MainActivityNew"
+            android:label="@string/title_activity_main_activity_new"></activity>
     </application>
 
 </manifest>

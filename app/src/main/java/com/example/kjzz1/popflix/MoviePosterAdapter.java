@@ -49,7 +49,7 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieDataTool> {
         Picasso
                 .with(mContext)
                 .load(item.getImage())
-                .resize(1200,750)
+                .fit()
                 .centerInside()
                 .placeholder(R.drawable.blankposter)
                 .into(holder.imageView);
