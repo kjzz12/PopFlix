@@ -32,17 +32,17 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieDataTool> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
+        convertView = null;
         ViewHolder holder;
 
-        if (row==null){
+        if (convertView==null){
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId,parent, false);
+            convertView = inflater.inflate(layoutResourceId,parent, false);
             holder = new ViewHolder();
-            holder.imageView = (ImageView) row.findViewById(R.id.grid_item_image);
-            row.setTag(holder);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.grid_item_image);
+            convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) row.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         MovieDataTool item = mGridData.get(position);
@@ -53,7 +53,7 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieDataTool> {
                 .centerInside()
                 .placeholder(R.drawable.blankposter)
                 .into(holder.imageView);
-        return row;
+        return convertView;
 
     }
 

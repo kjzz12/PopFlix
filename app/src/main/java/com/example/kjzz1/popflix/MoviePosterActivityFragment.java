@@ -4,6 +4,10 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +29,8 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class MoviePosterActivityFragment extends Fragment {
+
+    private View view;
 
     private GridView gridView;
     private MoviePosterAdapter moviePosterAdapter;
@@ -54,10 +60,14 @@ public class MoviePosterActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         String key = getString(R.string.key);
         String PopUrl = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&" + key;
 
-        gridView = (GridView) getView().findViewById(R.id.gridView);
+        view = inflater.inflate(R.layout.fragment_movie_poster_activity, container, false);
+
+        gridView = (GridView) view.findViewById(R.id.gridView);
 
         //Create empty arraylist
         movieData = new ArrayList<>();
@@ -86,7 +96,13 @@ public class MoviePosterActivityFragment extends Fragment {
 
         new ProcessJSON().execute(PopUrl);
 
-        return inflater.inflate(R.layout.fragment_movie_poster_activity, container, false);
+//        Toolbar tb = (Toolbar) view.findViewById(R.id.toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(tb);
+//
+//        final ActionBar ab = ((AppCompatActivity)getActivity()).getSupportActionBar();
+//        ab.setDisplayHomeAsUpEnabled(true);
+
+        return view;
     }
     //handling switching between the two sort orders
     @Override
@@ -144,7 +160,6 @@ public class MoviePosterActivityFragment extends Fragment {
         protected String doInBackground(String... strings){
             String stream;
             String urlString = strings[0];
-            String checker = "0";
 
             //calling external class for querying database
             MovieDBConnect hh = new MovieDBConnect();
