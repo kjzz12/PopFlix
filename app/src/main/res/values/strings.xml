@@ -6,6 +6,4 @@
     <string name="userRating">"Average User Rating: "</string>
     <string name="outOfTen">" out of 10"</string>
     <string name="key">your string here</string>
-    <string name="title_activity_main_activity_new">MainActivityNew</string>
-    <string name="action_settings">Settings</string>
 </resources>

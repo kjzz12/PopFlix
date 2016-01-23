@@ -43,6 +43,7 @@ public class MoviePosterActivityFragment extends Fragment {
 
     private String RatingUrl;
 
+
     public MoviePosterActivityFragment() {
     }
     @Override
@@ -56,9 +57,12 @@ public class MoviePosterActivityFragment extends Fragment {
         inflater.inflate(R.menu.sort, menu);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        setRetainInstance(true);
 
 
 
@@ -96,11 +100,6 @@ public class MoviePosterActivityFragment extends Fragment {
 
         new ProcessJSON().execute(PopUrl);
 
-//        Toolbar tb = (Toolbar) view.findViewById(R.id.toolbar);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(tb);
-//
-//        final ActionBar ab = ((AppCompatActivity)getActivity()).getSupportActionBar();
-//        ab.setDisplayHomeAsUpEnabled(true);
 
         return view;
     }
