@@ -1,231 +1,64 @@
 package com.example.kjzz1.popflix;
 
-
-import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
-import java.util.concurrent.ExecutionException;
-
-public class DetailsActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private ImageButton playButton;
-    private TextView movieReviewTruncated;
-    private TextView movieReview;
-    private ImageView backdropView;
+public class DetailsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_details_view);
 
-        //The easiest way to get a transparent back button was with a Toolbar
+        if (savedInstanceState == null) {
 
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(tb);
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
 
-        final ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(arguments);
 
-        //get all the info from the intent
-        String image = getIntent().getStringExtra("image");
-        String title = getIntent().getStringExtra("title");
-        String date = getIntent().getStringExtra("releaseDate");
-        String overview = getIntent().getStringExtra("plotSummary");
-        String rating = getIntent().getStringExtra("averageRating");
-        String id = getIntent().getStringExtra("movieID");
-        String key = getString(R.string.key);
-
-        String backdropURL = "https://api.themoviedb.org/3/movie/" + id + "/images?"+key;
-        String backdrop = null;
-
-        String reviewURL = "https://api.themoviedb.org/3/movie/" + id + "/reviews?"+ key;
-        String review = null;
-
-        try {
-            //retrieve image from AsyncTask. I KNOW this is not the best way to do this, please help!
-            backdrop = new DetailProcessJSON().execute(backdropURL).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.movie_detail_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         }
+            Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(tb);
 
-        try {
-            review = new ReviewJSON().execute(reviewURL).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        String [] arr = review.split("\\s+");
-        String truncatedReview = "";
-
-        if (arr.length < 50) {
-            truncatedReview = review;
-        }else for (int i=0; i<50; i++){
-            truncatedReview = truncatedReview + " " + arr[i];
-        }
+            final ActionBar ab = getSupportActionBar();
+            ab.setDisplayHomeAsUpEnabled(true);
 
 
-        //don't want title in DetailsActivity
-        setTitle(null);
-
-        ImageView posterView = (ImageView) findViewById(R.id.grid_item_image);
-
-        backdropView = (ImageView) findViewById(R.id.backdrop_view);
-        backdropView.setOnClickListener(this);
-
-        TextView titleView = (TextView) findViewById(R.id.title_view);
-        titleView.setText(title);
-
-        TextView releaseDate = (TextView) findViewById(R.id.releaseDate);
-        releaseDate.setText(getString(R.string.released) + date);
-
-        TextView plotSummary = (TextView) findViewById(R.id.plotSummary);
-        plotSummary.setText(overview);
-
-        TextView averageRating = (TextView) findViewById(R.id.averageRating);
-        averageRating.setText(getString(R.string.userRating) + rating + getString(R.string.outOfTen));
-
-        movieReviewTruncated = (TextView) findViewById(R.id.movieReviewTruncated);
-        if (arr.length < 50) {
-            movieReviewTruncated.setText(truncatedReview);
-        }else for (int i=0; i<50; i++){
-            movieReviewTruncated.setText(truncatedReview + "...");
-        }
-
-        movieReviewTruncated.setTypeface(null, Typeface.ITALIC);
-        movieReviewTruncated.setOnClickListener(this);
-
-        movieReview = (TextView) findViewById(R.id.movieReview);
-        movieReview.setText("Read Movie Review");
-        movieReview.setOnClickListener(this);
-
-        playButton = (ImageButton) findViewById(R.id.playButton);
-        playButton.setOnClickListener(this);
-
-        if (truncatedReview == "No reviews found."){
-            movieReview.setVisibility(View.GONE);
-        }
-
-        Picasso
-                .with(this)
-                .load(image)
-                .resize(300, 900)
-                .centerInside()
-                .into(posterView);
-
-
-        Picasso
-                .with(this)
-                .load(backdrop)
-                .fit()
-                .centerInside()
-                .into(backdropView);
-
-        Picasso
-                .with(this)
-                .load(R.mipmap.ic_play_circle_outline_white_48dp)
-                .fit()
-                .centerInside()
-                .into(playButton);
-
-
-        }
-    @Override
-    public void onClick(View v) {
-        if (v == movieReview) {
-            String key = getString(R.string.key);
-            String id = getIntent().getStringExtra("movieID");
-            String databaseURL = "https://api.themoviedb.org/3/movie/" + id + "/reviews?"+ key;
-            String review = null;
-            try {
-                //retrieve image from AsyncTask. I KNOW this is not the best way to do this, please help!
-                review = new ReviewJSON().execute(databaseURL).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
-            intent.putExtra("review", review);
-
-            startActivity(intent);
-        } else if (v == movieReviewTruncated) {
-            String key = getString(R.string.key);
-            String id = getIntent().getStringExtra("movieID");
-            String databaseURL = "https://api.themoviedb.org/3/movie/" + id + "/reviews?"+ key;
-            String review = null;
-            try {
-                //retrieve image from AsyncTask. I KNOW this is not the best way to do this, please help!
-                review = new ReviewJSON().execute(databaseURL).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
-            intent.putExtra("review", review);
-
-            startActivity(intent);
-        } else if (v == playButton) {
-            String key = getString(R.string.key);
-            String id = getIntent().getStringExtra("movieID");
-            String databaseURL = "https://api.themoviedb.org/3/movie/" + id + "/videos?"+ key;
-            String videoURL = null;
-            try {
-                //retrieve image from AsyncTask. I KNOW this is not the best way to do this, please help!
-                videoURL = new YouTubeJSON().execute(databaseURL).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
-            startActivity(intent);
-        } else if (v== backdropView){
-            String key = getString(R.string.key);
-            String id = getIntent().getStringExtra("movieID");
-            String databaseURL = "https://api.themoviedb.org/3/movie/" + id + "/videos?"+ key;
-            String videoURL = null;
-            try {
-                //retrieve image from AsyncTask. I KNOW this is not the best way to do this, please help!
-                videoURL = new YouTubeJSON().execute(databaseURL).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
-            startActivity(intent);
-        }
+        setTitle("");
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.sort, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

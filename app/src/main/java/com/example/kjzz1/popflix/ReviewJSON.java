@@ -22,6 +22,8 @@ public class ReviewJSON extends AsyncTask<String, Void, String> {
 
         stream = hh.GetHTTPData(urlString);
 
+        review = "";
+
         if (stream != null) {
             try {
                 JSONObject reader = new JSONObject(stream);
@@ -33,10 +35,9 @@ public class ReviewJSON extends AsyncTask<String, Void, String> {
                     String content = jsonObject.getString("content");
 
 
-
-                    review = "";
-
-                    review = review + content + "\r\n\r\n" + "Reviewed by: " + author;
+                    review = review + "Review #" + Integer.toString(i+1) + ":" + "\r\n" +
+                            "Reviewed by " + author + "\r\n\r\n" +
+                            content + "\r\n\r\n";
                 }
 
             } catch (JSONException e) {

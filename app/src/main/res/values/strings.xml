@@ -5,5 +5,5 @@
     <string name="released">"Released "</string>
     <string name="userRating">"Average User Rating: "</string>
     <string name="outOfTen">" out of 10"</string>
-    <string name="key">your string here</string>
+    <string name="key">api_key=</string>
 </resources>

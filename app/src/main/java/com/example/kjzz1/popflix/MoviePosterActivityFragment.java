@@ -1,13 +1,9 @@
 package com.example.kjzz1.popflix;
 
+import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +30,7 @@ public class MoviePosterActivityFragment extends Fragment {
 
     private GridView gridView;
     private MoviePosterAdapter moviePosterAdapter;
-    private ArrayList<MovieDataTool> movieData;
+    private ArrayList<MovieData> movieData;
 
     private DateTime old = new DateTime().minusMonths (6);
     private String OldDate;
@@ -43,9 +39,33 @@ public class MoviePosterActivityFragment extends Fragment {
 
     private String RatingUrl;
 
+    OnMovieSelectedListener mListener;
 
     public MoviePosterActivityFragment() {
     }
+
+    public interface OnMovieSelectedListener {
+        public void OnMovieSelected(MovieData item);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnMovieSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnItemClickedListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,18 +103,11 @@ public class MoviePosterActivityFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-                MovieDataTool item = (MovieDataTool) parent.getItemAtPosition(position);
+                Log.v("Position ID", Integer.toString(position));
 
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                MovieData movieData = (MovieData) parent.getItemAtPosition(position);
 
-                intent.putExtra("image", item.getImage());
-                intent.putExtra("title", item.getTitle());
-                intent.putExtra("releaseDate", item.getRelaseDate());
-                intent.putExtra("plotSummary", item.getPlotSummary());
-                intent.putExtra("averageRating", item.getUserRating());
-                intent.putExtra("movieID", item.getId());
-
-                startActivity(intent);
+                mListener.OnMovieSelected(movieData);
             }
         });
 
@@ -180,14 +193,14 @@ public class MoviePosterActivityFragment extends Fragment {
             if (stream != null) {
                 try {
                     JSONObject reader = new JSONObject(stream);
-                    MovieDataTool item;
+                    MovieData item;
                     JSONArray results = reader.optJSONArray("results");
 
                     for(int i=0; i<results.length(); i++){
 
                         //get results
                         JSONObject jsonObject = results.getJSONObject(i);
-                        item = new MovieDataTool();
+                        item = new MovieData();
 
                         //extract strings
                         String last = "http://image.tmdb.org/t/p/w342"+jsonObject.getString("poster_path");
@@ -197,7 +210,7 @@ public class MoviePosterActivityFragment extends Fragment {
                         String userRating = jsonObject.getString("vote_average");
                         String id = jsonObject.getString("id");
 
-                        //add those to MovieDataTool
+                        //add those to MovieData
                         item.setImage(last);
                         item.setMovieTitle(movieTitle);
                         item.setReleaseDate(releaseDate);

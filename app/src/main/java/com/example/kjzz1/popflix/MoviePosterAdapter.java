@@ -13,19 +13,19 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 
-public class MoviePosterAdapter extends ArrayAdapter<MovieDataTool> {
+public class MoviePosterAdapter extends ArrayAdapter<MovieData> {
     private Context mContext;
     private int layoutResourceId;
-    private ArrayList<MovieDataTool> mGridData = new ArrayList<>();
+    private ArrayList<MovieData> mGridData = new ArrayList<>();
 
-    public MoviePosterAdapter(Context mContext, int layoutResourceId, ArrayList<MovieDataTool> mGridData) {
+    public MoviePosterAdapter(Context mContext, int layoutResourceId, ArrayList<MovieData> mGridData) {
         super(mContext, layoutResourceId, mGridData);
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
         this.mGridData = mGridData;
     }
 
-    public void setGridData(ArrayList<MovieDataTool> mGridData) {
+    public void setGridData(ArrayList<MovieData> mGridData) {
         this.mGridData = mGridData;
         notifyDataSetChanged();
     }
@@ -45,7 +45,7 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieDataTool> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        MovieDataTool item = mGridData.get(position);
+        MovieData item = mGridData.get(position);
         Picasso
                 .with(mContext)
                 .load(item.getImage())
