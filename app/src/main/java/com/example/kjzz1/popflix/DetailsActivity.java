@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class DetailsActivity extends ActionBarActivity {
+public class DetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +25,11 @@ public class DetailsActivity extends ActionBarActivity {
                     .add(R.id.movie_detail_container, fragment)
                     .commit();
         }
-            Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(tb);
-
-            final ActionBar ab = getSupportActionBar();
-            ab.setDisplayHomeAsUpEnabled(true);
+//            Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+//            setSupportActionBar(tb);
+//
+//            final ActionBar ab = getSupportActionBar();
+//            ab.setDisplayHomeAsUpEnabled(true);
 
 
         setTitle("");

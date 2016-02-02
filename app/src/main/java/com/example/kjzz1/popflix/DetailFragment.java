@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,16 +50,23 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         if (getArguments()!= null) {
             movieData = getArguments().getParcelable("movie");
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setRetainInstance(true);
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
+        if (getActivity().findViewById(R.id.gridView) == null) {
 
+            Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+
+
+            //for crate home button
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            activity.setSupportActionBar(toolbar);
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         if (movieData == null) {
             movieData = getActivity().getIntent().getParcelableExtra("movie");
@@ -185,8 +194,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 .centerInside()
                 .into(playButton);
 
+
         // Inflate the layout for this fragment
         return view;
+
     }
     @Override
     public void onClick(View v) {

@@ -82,9 +82,6 @@ public class MoviePosterActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        setRetainInstance(true);
-
-
 
         String key = getString(R.string.key);
         String PopUrl = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&" + key;
