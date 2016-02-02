@@ -19,15 +19,10 @@ public class DetailsActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
 
-            Bundle arguments = new Bundle();
-            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
-
             DetailFragment fragment = new DetailFragment();
-            fragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.movie_detail_container, fragment)
-                    .addToBackStack(null)
                     .commit();
         }
             Toolbar tb = (Toolbar) findViewById(R.id.toolbar);

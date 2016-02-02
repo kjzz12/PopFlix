@@ -27,10 +27,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     private TextView movieReview;
     private ImageView backdropView;
 
-    static final String DETAIL_URI = "URI";
-
-    private Uri mUri;
-
     private MovieData movieData;
 
     private String image;
@@ -52,6 +48,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         if (getArguments()!= null) {
             movieData = getArguments().getParcelable("movie");
         }
+
     }
 
     @Override
@@ -59,6 +56,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         setRetainInstance(true);
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
+
+
 
         if (movieData == null) {
             movieData = getActivity().getIntent().getParcelableExtra("movie");
@@ -120,6 +119,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         }else for (int i=0; i<50; i++){
             truncatedReview = truncatedReview + " " + arr[i];
         }
+
+//        android.app.ActionBar ab = getActivity().getActionBar();
+//        ab.setDisplayHomeAsUpEnabled(true);
+//        ab.setDisplayShowHomeEnabled(true);
 
 
         ImageView posterView = (ImageView) view.findViewById(R.id.grid_item_image);

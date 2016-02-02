@@ -25,6 +25,7 @@ public class MoviePosterActivity extends ActionBarActivity
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movie_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
+                        .addToBackStack(null)
                         .commit();
             }
         } else {
@@ -57,6 +58,8 @@ public class MoviePosterActivity extends ActionBarActivity
         DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.movie_detail_container);
         if (detailFragment == null) {
+
+
             Intent intent = new Intent(this, DetailsActivity.class);
 
             intent.putExtra("movie", item);
