@@ -37,7 +37,7 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieData> {
 
         if (convertView==null){
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-            convertView = inflater.inflate(layoutResourceId,parent, false);
+            convertView = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.grid_item_image);
             convertView.setTag(holder);
