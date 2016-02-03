@@ -2,8 +2,11 @@ package com.example.kjzz1.popflix;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -158,6 +162,12 @@ public class MoviePosterActivityFragment extends Fragment {
                 Log.v("URL", RatingUrl);
                 new ProcessJSON().execute(RatingUrl);
                 break;
+            case R.id.favorites:
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                Map<String, ?> allEntries = sharedPreferences.getAll();
+                for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                    Log.d("map values", entry.getKey()+ ": " + entry.getValue().toString());
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
