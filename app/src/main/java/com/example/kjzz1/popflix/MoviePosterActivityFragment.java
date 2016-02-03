@@ -30,6 +30,9 @@ import java.util.Map;
  */
 public class MoviePosterActivityFragment extends Fragment {
 
+    private MenuItem mostPopular;
+    private MenuItem highestRated;
+
     private View view;
 
     private GridView gridView;
@@ -75,16 +78,21 @@ public class MoviePosterActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
+
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.sort, menu);
+
+        mostPopular = menu.getItem(1);
+        highestRated = menu.getItem(2);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setRetainInstance(true);
 
 
         String key = getString(R.string.key);
@@ -163,11 +171,26 @@ public class MoviePosterActivityFragment extends Fragment {
                 new ProcessJSON().execute(RatingUrl);
                 break;
             case R.id.favorites:
+                movieData = new ArrayList<>();
+                moviePosterAdapter = new MoviePosterAdapter(getActivity(), R.layout.movie_item_layout, movieData);
+                gridView.setAdapter(moviePosterAdapter);
+
+                ArrayList ids = new ArrayList();
+
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 Map<String, ?> allEntries = sharedPreferences.getAll();
                 for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                    Log.d("map values", entry.getKey()+ ": " + entry.getValue().toString());
+                    ids.add(entry.getValue().toString());
                 }
+                for (int i = 0; i < ids.size(); i++){
+
+                    String movieURL = "https://api.themoviedb.org/3/movie/" + ids.get(i) + "?" + key;
+
+                    new ProcessJSON().execute(movieURL);
+                }
+                if (mostPopular.isChecked()) mostPopular.setChecked(false);
+                if (highestRated.isChecked()) highestRated.setChecked(false);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -203,19 +226,39 @@ public class MoviePosterActivityFragment extends Fragment {
                     MovieData item;
                     JSONArray results = reader.optJSONArray("results");
 
-                    for(int i=0; i<results.length(); i++){
+                    if (results != null) {
+                        for (int i = 0; i < results.length(); i++) {
 
-                        //get results
-                        JSONObject jsonObject = results.getJSONObject(i);
+                            //get results
+                            JSONObject jsonObject = results.getJSONObject(i);
+                            item = new MovieData();
+
+                            //extract strings
+                            String last = "http://image.tmdb.org/t/p/w342" + jsonObject.getString("poster_path");
+                            String movieTitle = jsonObject.getString("original_title");
+                            String releaseDate = jsonObject.getString("release_date");
+                            String plotSummary = jsonObject.getString("overview");
+                            String userRating = jsonObject.getString("vote_average");
+                            String id = jsonObject.getString("id");
+
+                            //add those to MovieData
+                            item.setImage(last);
+                            item.setMovieTitle(movieTitle);
+                            item.setReleaseDate(releaseDate);
+                            item.setPlotSummary(plotSummary);
+                            item.setUserRating(userRating);
+                            item.setId(id);
+                            movieData.add(item);
+                        }
+                    } else {
                         item = new MovieData();
 
-                        //extract strings
-                        String last = "http://image.tmdb.org/t/p/w342"+jsonObject.getString("poster_path");
-                        String movieTitle = jsonObject.getString("original_title");
-                        String releaseDate = jsonObject.getString("release_date");
-                        String plotSummary = jsonObject.getString("overview");
-                        String userRating = jsonObject.getString("vote_average");
-                        String id = jsonObject.getString("id");
+                        String last = "http://image.tmdb.org/t/p/w342" + reader.getString("poster_path");
+                        String movieTitle = reader.getString("original_title");
+                        String releaseDate = reader.getString("release_date");
+                        String plotSummary = reader.getString("overview");
+                        String userRating = reader.getString("vote_average");
+                        String id = reader.getString("id");
 
                         //add those to MovieData
                         item.setImage(last);
