@@ -1,15 +1,15 @@
 package com.example.kjzz1.popflix;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutionException;
 public class DetailFragment extends Fragment implements View.OnClickListener {
 
     private ImageButton playButton;
+    private ImageButton faveButton;
     private TextView movieReviewTruncated;
     private TextView movieReview;
     private ImageView backdropView;
@@ -38,6 +39,11 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     private String rating;
     private String id;
     private String key;
+
+    public SharedPreferences preferenceSettings;
+    public SharedPreferences.Editor editor;
+
+    private static final int PREFERENCE_MODE_PRIVATE = 0;
 
 
     public DetailFragment() {
@@ -60,6 +66,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         if (getActivity().findViewById(R.id.gridView) == null) {
 
             Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+
+
 
 
             //for crate home button
@@ -168,6 +176,9 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         playButton = (ImageButton) view.findViewById(R.id.playButton);
         playButton.setOnClickListener(this);
 
+        faveButton = (ImageButton) view.findViewById(R.id.faveButton);
+        faveButton.setOnClickListener(this);
+
         if (truncatedReview == "No reviews found."){
             movieReview.setVisibility(View.GONE);
         }
@@ -193,6 +204,25 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 .fit()
                 .centerInside()
                 .into(playButton);
+
+        preferenceSettings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        if (preferenceSettings.contains(title) == true) {
+
+            Picasso
+                    .with(getActivity())
+                    .load(R.mipmap.ic_favorite_white_24dp)
+                    .fit()
+                    .centerInside()
+                    .into(faveButton);
+        } else {
+            Picasso
+                    .with(getActivity())
+                    .load(R.mipmap.ic_favorite_border_white_24dp)
+                    .fit()
+                    .centerInside()
+                    .into(faveButton);
+        }
 
 
         // Inflate the layout for this fragment
@@ -259,6 +289,42 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
             startActivity(intent);
+        } else if (v == faveButton){
+
+            preferenceSettings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+
+            if (preferenceSettings.contains(title) == true) {
+                editor = preferenceSettings.edit();
+
+                editor.remove(title);
+                editor.commit();
+
+                Picasso
+                        .with(getActivity())
+                        .load(R.mipmap.ic_favorite_border_white_24dp)
+                        .fit()
+                        .centerInside()
+                        .into(faveButton);
+
+
+
+            } else {
+
+                editor = preferenceSettings.edit();
+
+                editor.putString(title, id);
+                editor.commit();
+
+                Picasso
+                        .with(getActivity())
+                        .load(R.mipmap.ic_favorite_white_24dp)
+                        .fit()
+                        .centerInside()
+                        .into(faveButton);
+
+                Log.v("id:", preferenceSettings.getString(title, id));
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.kjzz1.popflix;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class DetailsActivity extends AppCompatActivity {
+    private SharedPreferences preferenceSettings;
+    private SharedPreferences.Editor preferenceEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
