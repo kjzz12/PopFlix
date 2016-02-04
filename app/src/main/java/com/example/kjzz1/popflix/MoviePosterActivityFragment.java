@@ -16,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -30,6 +33,7 @@ import java.util.Map;
  */
 public class MoviePosterActivityFragment extends Fragment {
 
+    private MenuItem favorites;
     private MenuItem mostPopular;
     private MenuItem highestRated;
 
@@ -84,6 +88,7 @@ public class MoviePosterActivityFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.sort, menu);
 
+        favorites = menu.getItem(0);
         mostPopular = menu.getItem(1);
         highestRated = menu.getItem(2);
     }
@@ -122,7 +127,6 @@ public class MoviePosterActivityFragment extends Fragment {
 
         new ProcessJSON().execute(PopUrl);
 
-
         return view;
     }
     //handling switching between the two sort orders
@@ -131,9 +135,6 @@ public class MoviePosterActivityFragment extends Fragment {
         String key = getString(R.string.key);
         switch (item.getItemId()) {
             case R.id.popularity:
-                if (item.isChecked()) item.setChecked(false);
-                else item.setChecked(true);
-
                 movieData = new ArrayList<>();
                 moviePosterAdapter = new MoviePosterAdapter(getActivity(), R.layout.movie_item_layout, movieData);
                 gridView.setAdapter(moviePosterAdapter);
@@ -141,10 +142,15 @@ public class MoviePosterActivityFragment extends Fragment {
                 String PopUrl = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&" + key;
 
                 new ProcessJSON().execute(PopUrl);
+
+                mostPopular.setIcon(R.drawable.fullflame);
+                highestRated.setIcon(R.drawable.emptystar);
+                favorites.setIcon(R.drawable.emptyheart);
+
+                Toast.makeText(getActivity(), "Most Popular Movies", Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.rating:
-                if (item.isChecked()) item.setChecked(false);
-                else item.setChecked(true);
                 movieData = new ArrayList<>();
                 moviePosterAdapter = new MoviePosterAdapter(getActivity(), R.layout.movie_item_layout, movieData);
                 gridView.setAdapter(moviePosterAdapter);
@@ -169,6 +175,13 @@ public class MoviePosterActivityFragment extends Fragment {
                 RatingUrl = "http://api.themoviedb.org/3/discover/movie?primary_release_date.gte="+ OldDate +"&primary_release_date.lte="+ NowDate +"&vote_count.gte=100&sort_by=vote_average.desc&"+key;
                 Log.v("URL", RatingUrl);
                 new ProcessJSON().execute(RatingUrl);
+
+                mostPopular.setIcon(R.drawable.emptyflame);
+                highestRated.setIcon(R.drawable.fullstar);
+                favorites.setIcon(R.drawable.emptyheart);
+
+                Toast.makeText(getActivity(), "Highest Rated Movies", Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.favorites:
                 movieData = new ArrayList<>();
@@ -188,8 +201,13 @@ public class MoviePosterActivityFragment extends Fragment {
 
                     new ProcessJSON().execute(movieURL);
                 }
-                if (mostPopular.isChecked()) mostPopular.setChecked(false);
-                if (highestRated.isChecked()) highestRated.setChecked(false);
+
+                mostPopular.setIcon(R.drawable.emptyflame);
+                highestRated.setIcon(R.drawable.emptystar);
+                favorites.setIcon(R.drawable.fullheart);
+
+                Toast.makeText(getActivity(), "Your Favorite Movies", Toast.LENGTH_SHORT).show();
+
                 break;
             default:
                 return super.onOptionsItemSelected(item);
