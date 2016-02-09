@@ -15,11 +15,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static android.view.ViewGroup.*;
+
 
 public class MoviePosterAdapter extends ArrayAdapter<MovieData> {
     private Context mContext;
     private int layoutResourceId;
     private ArrayList<MovieData> mGridData = new ArrayList<>();
+    private String posterHeight;
 
     public MoviePosterAdapter(Context mContext, int layoutResourceId, ArrayList<MovieData> mGridData) {
         super(mContext, layoutResourceId, mGridData);
@@ -37,17 +40,25 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieData> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
+        MovieData item = mGridData.get(position);
+
         if (convertView==null){
+            Integer posterHeight = item.getPosterHeight();
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
+
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.grid_item_image);
+            final LayoutParams params = imageView.getLayoutParams();
+            params.height = posterHeight;
+
             holder = new ViewHolder();
-            holder.imageView = (ImageView) convertView.findViewById(R.id.grid_item_image);
+            holder.imageView = imageView;
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        MovieData item = mGridData.get(position);
+
         Picasso
                 .with(mContext)
                 .load(item.getImage())

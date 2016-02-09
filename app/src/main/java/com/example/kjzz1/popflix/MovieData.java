@@ -13,6 +13,7 @@ public class MovieData implements Parcelable {
     private String plotSummary;
     private String userRating;
     private String id;
+    private Integer posterHeight;
 
 
     public MovieData() {
@@ -44,6 +45,8 @@ public class MovieData implements Parcelable {
         return id;
     }
 
+    public Integer getPosterHeight() {return posterHeight;}
+
     public void setImage(String image) {
         this.image = image;
         Log.v("MovieData", image);
@@ -68,6 +71,8 @@ public class MovieData implements Parcelable {
     public void setId(String id) {
         this.id = id;
     }
+
+    public void setPosterHeight(Integer posterHeight) {this.posterHeight = posterHeight;}
 
 
     protected MovieData(Parcel in) {
