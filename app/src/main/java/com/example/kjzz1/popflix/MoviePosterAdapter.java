@@ -2,9 +2,12 @@ package com.example.kjzz1.popflix;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
@@ -32,7 +35,6 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieData> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = null;
         ViewHolder holder;
 
         if (convertView==null){

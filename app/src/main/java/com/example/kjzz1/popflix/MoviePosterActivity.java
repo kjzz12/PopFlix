@@ -25,10 +25,6 @@ public class MoviePosterActivity extends AppCompatActivity
                 mTwoPane = true;
 
             if (savedInstanceState == null) {
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.movie_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
-//                        .addToBackStack(null)
-//                        .commit();
 
                 android.support.v4.app.FragmentManager mFragmentManager = getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();

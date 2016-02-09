@@ -129,6 +129,10 @@ public class MoviePosterActivityFragment extends Fragment {
 
         return view;
     }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        outState.putParcelableArrayList("movie", item);
+//    }
     //handling switching between the two sort orders
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
