@@ -29,6 +29,7 @@ public class ReviewJSON extends AsyncTask<String, Void, String> {
                 JSONObject reader = new JSONObject(stream);
                 JSONArray results = reader.optJSONArray("results");
 
+                //iterate over reviews, grabbing review content and authors' names
                 for (int i=0;i<results.length();i++){
                     JSONObject jsonObject = results.getJSONObject(i);
                     String author = jsonObject.getString("author");

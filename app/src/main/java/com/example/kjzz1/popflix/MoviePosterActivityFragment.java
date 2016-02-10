@@ -94,6 +94,7 @@ public class MoviePosterActivityFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.sort, menu);
 
+        //identify menu options
         favorites = menu.getItem(0);
         mostPopular = menu.getItem(1);
         highestRated = menu.getItem(2);
@@ -136,6 +137,8 @@ public class MoviePosterActivityFragment extends Fragment {
             new ProcessJSON().execute(PopUrl);
         } else {
 
+            //if savedstate isn't null, we can reload images without connectivity
+            //dynamically size posters
             DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
             float dpWidth = displayMetrics.widthPixels;
             if (getActivity().findViewById(R.id.movie_detail_container) != null) {
@@ -183,6 +186,7 @@ public class MoviePosterActivityFragment extends Fragment {
 
                 new ProcessJSON().execute(PopUrl);
 
+                //highlight proper icon
                 mostPopular.setIcon(R.drawable.fullflame);
                 highestRated.setIcon(R.drawable.emptystar);
                 favorites.setIcon(R.drawable.emptyheart);
@@ -223,6 +227,8 @@ public class MoviePosterActivityFragment extends Fragment {
                 Toast.makeText(getActivity(), "Highest Rated Movies", Toast.LENGTH_SHORT).show();
 
                 break;
+
+            //handle favorites
             case R.id.favorites:
                 movieData = new ArrayList<>();
                 moviePosterAdapter = new MoviePosterAdapter(getActivity(), R.layout.movie_item_layout, movieData);
@@ -319,6 +325,8 @@ public class MoviePosterActivityFragment extends Fragment {
                             savedMovieData = movieData;
                         }
                     } else {
+
+                        //this handles the query for favorites. The JSON is formatted somewhat differently, requiring a different query
                         item = new MovieData();
 
                         String last = "http://image.tmdb.org/t/p/w342" + reader.getString("poster_path");

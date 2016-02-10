@@ -7,6 +7,7 @@ import android.widget.TextView;
 /**
  * Created by kjzz1 on 1/16/2016.
  */
+//Simple layout for reviews
 public class ReviewActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {

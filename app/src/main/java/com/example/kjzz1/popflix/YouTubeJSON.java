@@ -26,12 +26,8 @@ public class YouTubeJSON extends AsyncTask<String, Void, String> {
                 JSONObject reader = new JSONObject(stream);
                 JSONArray results = reader.optJSONArray("results");
 
-                //getting random number for array of backdrops so that each time DetailsActivity is
-                // loaded there is a diff image.
-                Double d = (Math.floor(Math.random() * results.length()));
-                Integer i = (int) d.doubleValue();
-
-                JSONObject jsonObject = results.getJSONObject(i);
+                //it's too bad more reviews aren't included, or I'd choose a random one here as well
+                JSONObject jsonObject = results.getJSONObject(0);
                 youTubeURL = "https://www.youtube.com/watch?v=" + jsonObject.getString("key");
 
             } catch (JSONException e) {

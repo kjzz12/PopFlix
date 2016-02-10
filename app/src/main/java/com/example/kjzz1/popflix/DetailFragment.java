@@ -67,15 +67,12 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
             Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 
-
-
-
-            //for crate home button
+            //allow up navigation
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.setSupportActionBar(toolbar);
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
+        //This if-else allows for accepting either the intent, or updating the already present fragment
         if (movieData == null) {
             movieData = getActivity().getIntent().getParcelableExtra("movie");
 
@@ -112,7 +109,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         String review = null;
 
         try {
-            //retrieve image from AsyncTask. I KNOW this is not the best way to do this, please help!
+            //retrieve image from AsyncTask.
             backdrop = new DetailProcessJSON().execute(backdropURL).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -120,6 +117,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
 
+        //retrieve user reviews
         try {
             review = new ReviewJSON().execute(reviewURL).get();
         } catch (InterruptedException e) {
@@ -137,10 +135,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             truncatedReview = truncatedReview + " " + arr[i];
         }
 
-//        android.app.ActionBar ab = getActivity().getActionBar();
-//        ab.setDisplayHomeAsUpEnabled(true);
-//        ab.setDisplayShowHomeEnabled(true);
 
+        // set up all text and imageviews
 
         ImageView posterView = (ImageView) view.findViewById(R.id.grid_item_image);
 
@@ -166,6 +162,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             movieReviewTruncated.setText(truncatedReview + "...");
         }
 
+        //manipulate review textview
         movieReviewTruncated.setTypeface(null, Typeface.ITALIC);
         movieReviewTruncated.setOnClickListener(this);
 
@@ -183,6 +180,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             movieReview.setVisibility(View.GONE);
         }
 
+        //poster
         Picasso
                 .with(getActivity())
                 .load(image)
@@ -190,7 +188,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 .centerInside()
                 .into(posterView);
 
-
+        //backdrop
         Picasso
                 .with(getActivity())
                 .load(backdrop)
@@ -198,6 +196,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 .centerInside()
                 .into(backdropView);
 
+        //favorite icon
         Picasso
                 .with(getActivity())
                 .load(R.mipmap.ic_play_circle_outline_white_48dp)
@@ -205,10 +204,13 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 .centerInside()
                 .into(playButton);
 
+        //set up favoriting process
+
         preferenceSettings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         if (preferenceSettings.contains(title) == true) {
 
+            //check sharedprefs, adjust heart
             Picasso
                     .with(getActivity())
                     .load(R.mipmap.ic_favorite_white_24dp)
@@ -290,6 +292,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
             startActivity(intent);
         } else if (v == faveButton){
+
+            //set up adding movies to sharedprefs
 
             preferenceSettings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 

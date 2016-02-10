@@ -22,7 +22,6 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieData> {
     private Context mContext;
     private int layoutResourceId;
     private ArrayList<MovieData> mGridData = new ArrayList<>();
-    private String posterHeight;
 
     public MoviePosterAdapter(Context mContext, int layoutResourceId, ArrayList<MovieData> mGridData) {
         super(mContext, layoutResourceId, mGridData);
@@ -43,6 +42,7 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieData> {
         MovieData item = mGridData.get(position);
 
         if (convertView==null){
+            //poster dimensions set here
             Integer posterHeight = item.getPosterHeight();
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);

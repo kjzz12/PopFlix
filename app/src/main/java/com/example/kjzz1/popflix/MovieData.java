@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-//Is this the best way to handle this?
+//Took me forever to figure out the whole Parcelable thing so that the twopane layout would work.
 
 public class MovieData implements Parcelable {
     private String image;
