@@ -14,6 +14,7 @@ public class MoviePosterActivity extends AppCompatActivity
         implements MoviePosterActivityFragment.OnMovieSelectedListener{
 
     private boolean mTwoPane;
+    private DetailFragment fragment;
 
 
     @Override
@@ -29,13 +30,22 @@ public class MoviePosterActivity extends AppCompatActivity
                 android.support.v4.app.FragmentManager mFragmentManager = getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
-                DetailFragment fragment = new DetailFragment();
+                fragment = new DetailFragment();
 
                 fragmentTransaction.add(R.id.movie_detail_container, fragment);
                 fragmentTransaction.commit();
             }
         } else {
             mTwoPane = false;
+        }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        if (mTwoPane) {
+            android.support.v4.app.FragmentManager mFragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commit();
         }
     }
     @Override

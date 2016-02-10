@@ -2,6 +2,7 @@ package com.example.kjzz1.popflix;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -38,13 +39,15 @@ public class MoviePosterActivityFragment extends Fragment {
     private MenuItem mostPopular;
     private MenuItem highestRated;
 
-    private ArrayList movies;
+
 
     private View view;
 
     private GridView gridView;
     private MoviePosterAdapter moviePosterAdapter;
     private ArrayList<MovieData> movieData;
+    private ArrayList<MovieData> savedMovieData;
+    private Integer posterHeight;
 
     private DateTime old = new DateTime().minusMonths (6);
     private String OldDate;
@@ -132,7 +135,19 @@ public class MoviePosterActivityFragment extends Fragment {
 
             new ProcessJSON().execute(PopUrl);
         } else {
-            moviePosterAdapter = new MoviePosterAdapter(getActivity(), R.layout.movie_item_layout, movieData);
+
+            DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+            float dpWidth = displayMetrics.widthPixels;
+            if (getActivity().findViewById(R.id.movie_detail_container) != null) {
+                posterHeight = (int) (1.48 * (.25 * dpWidth));
+            } else {
+                posterHeight = (int) (1.48 * (.5 * dpWidth));
+            }
+
+            for (int i = 0; i<savedMovieData.size();i++) {
+                savedMovieData.get(i).setPosterHeight(posterHeight);
+            }
+            moviePosterAdapter = new MoviePosterAdapter(getActivity(), R.layout.movie_item_layout, savedMovieData);
             gridView.setAdapter(moviePosterAdapter);
 
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -140,9 +155,9 @@ public class MoviePosterActivityFragment extends Fragment {
 
                     Log.v("Position ID", Integer.toString(position));
 
-                    MovieData movieData = (MovieData) parent.getItemAtPosition(position);
+                    MovieData movieItem = (MovieData) parent.getItemAtPosition(position);
 
-                    mListener.OnMovieSelected(movieData);
+                    mListener.OnMovieSelected(movieItem);
                 }
             });
         }
@@ -151,7 +166,7 @@ public class MoviePosterActivityFragment extends Fragment {
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("movies", movieData);
+        outState.putParcelableArrayList("movies", savedMovieData);
         super.onSaveInstanceState(outState);
     }
     //handling switching between the two sort orders
@@ -271,7 +286,11 @@ public class MoviePosterActivityFragment extends Fragment {
 
                     DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
                     float dpWidth = displayMetrics.widthPixels;
-                    int posterHeight = (int)(1.48*(.5 * dpWidth));
+                    if (getActivity().findViewById(R.id.movie_detail_container) != null) {
+                        posterHeight = (int) (1.48 * (.25 * dpWidth));
+                    } else {
+                        posterHeight = (int) (1.48 * (.5 * dpWidth));
+                    }
 
                     if (results != null) {
                         for (int i = 0; i < results.length(); i++) {
@@ -297,6 +316,7 @@ public class MoviePosterActivityFragment extends Fragment {
                             item.setId(id);
                             item.setPosterHeight(posterHeight);
                             movieData.add(item);
+                            savedMovieData = movieData;
                         }
                     } else {
                         item = new MovieData();
@@ -315,7 +335,9 @@ public class MoviePosterActivityFragment extends Fragment {
                         item.setPlotSummary(plotSummary);
                         item.setUserRating(userRating);
                         item.setId(id);
+                        item.setPosterHeight(posterHeight);
                         movieData.add(item);
+                        savedMovieData = movieData;
                     }
 
                 } catch (JSONException e){

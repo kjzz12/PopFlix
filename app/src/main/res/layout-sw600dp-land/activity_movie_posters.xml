@@ -6,7 +6,7 @@
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
-    tools:context="com.example.android.sunshine.app.MainActivity"
+    tools:context="com.example.kjzz1.popflix.MoviePosterActivity"
     app:theme="@style/Theme.AppCompat.NoActionBar">
 
     <!--

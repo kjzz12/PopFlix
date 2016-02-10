@@ -63,8 +63,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        setRetainInstance(true);
-
         if (getActivity().findViewById(R.id.gridView) == null) {
 
             Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);

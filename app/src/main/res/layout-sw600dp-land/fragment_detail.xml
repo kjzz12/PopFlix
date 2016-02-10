@@ -93,5 +93,15 @@
             android:id="@+id/playButton"
             android:background="@android:color/transparent"
             android:clickable="true"/>
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/backdrop_view"
+            android:layout_alignRight="@id/backdrop_view"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/faveButton"
+            android:background="@android:color/transparent"
+            android:clickable="true"/>
     </RelativeLayout>
 </ScrollView>

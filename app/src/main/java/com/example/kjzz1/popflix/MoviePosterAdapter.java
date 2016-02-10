@@ -49,6 +49,7 @@ public class MoviePosterAdapter extends ArrayAdapter<MovieData> {
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.grid_item_image);
             final LayoutParams params = imageView.getLayoutParams();
+
             params.height = posterHeight;
 
             holder = new ViewHolder();
